@@ -20,6 +20,7 @@ export default {
    methods:{
     tabControlItemClick(index){
         this.currentIndex = index
+        this.$emit('tabClick',index)
     }
    },
    props:{
