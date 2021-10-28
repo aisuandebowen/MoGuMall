@@ -3,19 +3,24 @@
         <nav-bar class="home-nav">
             <h1 slot="center">购物街</h1>
         </nav-bar>
-        <home-swiper :banner="banner" class="banner"></home-swiper>
-        <home-recommend-view :recommend="recommend"></home-recommend-view>
-        <home-feature-view></home-feature-view>
-        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
-        <goods-list :goods="showGoods"></goods-list>
+        <scroll class="content" ref="scroll">
+            <home-swiper :banner="banner" class="banner"></home-swiper>
+            <home-recommend-view :recommend="recommend"></home-recommend-view>
+            <home-feature-view></home-feature-view>
+            <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
+            <goods-list :goods="showGoods"></goods-list>
+        </scroll>
+        <back-top @click.native="backClick"></back-top>
     </div>
 </template>
 
 <script>
     import NavBar from 'components/common/navbar/NavBar'
+    import Scroll from 'components/common/scroll/Scroll'
 
     import TabControl from 'components/content/tabControl/TabControl'
     import GoodsList from 'components/content/goods/GoodsList'
+    import BackTop from 'components/content/backTop/BackTop'
 
     import HomeSwiper from './childComps/HomeSwiper'
     import HomeRecommendView from './childComps/HomeRecommendView'
@@ -49,7 +54,7 @@
             this.getHomeGoods('sell')
         },
         computed: {
-            showGoods(){
+            showGoods() {
                 return this.goods[this.currentType].list
             }
         },
@@ -81,6 +86,9 @@
                     case 2:
                         this.currentType = 'sell'
                 }
+            },
+            backClick() {
+                this.$refs.scroll.scrollTo(0,0)
             }
         },
         components: {
@@ -90,12 +98,15 @@
             HomeSwiper,
             HomeRecommendView,
             HomeFeatureView,
+            Scroll,
+            BackTop
         }
     }
 </script>
 <style scoped>
     #home {
-        padding: 44px 0 39px;
+        height: 100vh;
+        position: relative;
     }
 
     h1 {
@@ -117,5 +128,16 @@
         position: sticky;
         top: 44px;
         z-index: 1;
+    }
+
+    .content {
+        position: absolute;
+        top: 44px;
+        bottom: 49px;
+        left: 0;
+        right: 0;
+        /* margin-top: 44px;
+        height: calc(100% - 44px - 49px); */
+        overflow: hidden;
     }
 </style>
