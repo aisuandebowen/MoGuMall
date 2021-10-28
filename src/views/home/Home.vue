@@ -3,14 +3,14 @@
         <nav-bar class="home-nav">
             <h1 slot="center">购物街</h1>
         </nav-bar>
-        <scroll class="content" ref="scroll">
+        <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
             <home-swiper :banner="banner" class="banner"></home-swiper>
             <home-recommend-view :recommend="recommend"></home-recommend-view>
             <home-feature-view></home-feature-view>
             <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
             <goods-list :goods="showGoods"></goods-list>
         </scroll>
-        <back-top @click.native="backClick"></back-top>
+        <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
     </div>
 </template>
 
@@ -42,7 +42,8 @@
                     'new': { page: 0, list: [] },
                     'sell': { page: 0, list: [] },
                 },
-                currentType: 'pop'
+                currentType: 'pop',
+                isShowBackTop: false
             }
         },
         created() {
@@ -89,6 +90,13 @@
             },
             backClick() {
                 this.$refs.scroll.scrollTo(0,0)
+            },
+            contentScroll(position) {
+                if(position.y<=-1000){
+                    this.isShowBackTop = true
+                }else {
+                    this.isShowBackTop = false
+                }
             }
         },
         components: {
