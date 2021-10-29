@@ -3,7 +3,8 @@
         <nav-bar class="home-nav">
             <h1 slot="center">购物街</h1>
         </nav-bar>
-        <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
+        <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true"
+            @pullingUp="loadMore">
             <home-swiper :banner="banner" class="banner"></home-swiper>
             <home-recommend-view :recommend="recommend"></home-recommend-view>
             <home-feature-view></home-feature-view>
@@ -53,6 +54,10 @@
             this.getHomeGoods('pop')
             this.getHomeGoods('new')
             this.getHomeGoods('sell')
+            // 监听Item图片加载
+            this.$bus.$on('itemImgLoad',()=>{
+                this.$refs.scroll.refresh()
+            })
         },
         computed: {
             showGoods() {
@@ -73,6 +78,7 @@
                 getHomeGoods(type, page).then(res => {
                     this.goods[type].list.push(...res.data.list)
                     this.goods[type].page += 1
+                    this.$refs.scroll.refresh()
                 })
             },
             // 事件监听
@@ -89,14 +95,18 @@
                 }
             },
             backClick() {
-                this.$refs.scroll.scrollTo(0,0)
+                this.$refs.scroll.scrollTo(0, 0)
             },
             contentScroll(position) {
-                if(position.y<=-1000){
+                if (position.y <= -1000) {
                     this.isShowBackTop = true
-                }else {
+                } else {
                     this.isShowBackTop = false
                 }
+            },
+            loadMore() {
+                // this.getHomeGoods(this.currentType)
+                // this.$refs.scroll.finishPullUp()
             }
         },
         components: {
