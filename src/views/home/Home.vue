@@ -54,10 +54,6 @@
             this.getHomeGoods('pop')
             this.getHomeGoods('new')
             this.getHomeGoods('sell')
-            // 监听Item图片加载
-            this.$bus.$on('itemImgLoad',()=>{
-                this.$refs.scroll.refresh()
-            })
         },
         computed: {
             showGoods() {
@@ -118,6 +114,12 @@
             HomeFeatureView,
             Scroll,
             BackTop
+        },
+        mounted() {
+            // 监听Item图片加载
+            this.$bus.$on('itemImgLoad', () => {
+                this.$refs.scroll && this.$refs.scroll.refresh()
+            })
         }
     }
 </script>
