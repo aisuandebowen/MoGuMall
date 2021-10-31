@@ -27,6 +27,8 @@
     import HomeRecommendView from './childComps/HomeRecommendView'
     import HomeFeatureView from './childComps/HomeFeatureView'
 
+    import {debounce} from 'common/utils'
+
     import {
         getHomeGoods,
         getHomeMultidata
@@ -101,8 +103,8 @@
                 }
             },
             loadMore() {
-                // this.getHomeGoods(this.currentType)
-                // this.$refs.scroll.finishPullUp()
+                this.getHomeGoods(this.currentType)
+                this.$refs.scroll.finishPullUp()
             }
         },
         components: {
@@ -116,9 +118,10 @@
             BackTop
         },
         mounted() {
+            const refresh = debounce(this.$refs.scroll.refresh)
             // 监听Item图片加载
             this.$bus.$on('itemImgLoad', () => {
-                this.$refs.scroll && this.$refs.scroll.refresh()
+                refresh()
             })
         }
     }
