@@ -8,7 +8,7 @@
             <home-swiper :banner="banner" class="banner"></home-swiper>
             <home-recommend-view :recommend="recommend"></home-recommend-view>
             <home-feature-view></home-feature-view>
-            <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
+            <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl"></tab-control>
             <goods-list :goods="showGoods"></goods-list>
         </scroll>
         <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
@@ -46,7 +46,8 @@
                     'sell': { page: 0, list: [] },
                 },
                 currentType: 'pop',
-                isShowBackTop: false
+                isShowBackTop: false,
+                tabOffsetTop: 0
             }
         },
         created() {
@@ -118,14 +119,17 @@
             BackTop
         },
         mounted() {
-            const refresh = debounce(this.$refs.scroll.refresh)
             // 监听Item图片加载
+            const refresh = debounce(this.$refs.scroll.refresh)
             this.$bus.$on('itemImgLoad', () => {
                 refresh()
             })
+
+            // 获取tab-control距离content顶部的距离
+            this.$tabOffsetTop = this.$refs.tabControl.$el.offsetTop
         }
     }
-</script>
+</script> 
 <style scoped>
     #home {
         height: 100vh;
