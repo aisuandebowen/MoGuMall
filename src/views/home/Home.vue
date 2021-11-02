@@ -3,13 +3,13 @@
         <nav-bar class="home-nav">
             <h1 slot="center">购物街</h1>
         </nav-bar>
-        <tab-control v-show="isShowTab" class="tab-control t1" :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl"></tab-control>
+        <tab-control v-show="isShowTab" class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl2"></tab-control>
         <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true"
             @pullingUp="loadMore">
             <home-swiper :banner="banner" class="banner" @swiperImageLoad="swiperImageLoad"></home-swiper>
             <home-recommend-view :recommend="recommend"></home-recommend-view>
             <home-feature-view></home-feature-view>
-            <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl" class="t2"></tab-control>
+            <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl"></tab-control>
             <goods-list :goods="showGoods"></goods-list>
         </scroll>
         <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
@@ -94,9 +94,8 @@
                     case 2:
                         this.currentType = 'sell'
                 }
-                // this.$refs.tabControl.currentIndex = index
-                // this.$refs.tabControl2.currentIndex = index
-                console.log(this.$refs.tabControl);
+                this.$refs.tabControl.currentIndex = index
+                this.$refs.tabControl2.currentIndex = index
             },
             backClick() {
                 this.$refs.scroll.scrollTo(0, 0)
@@ -106,7 +105,6 @@
                 this.isShowBackTop = (-position.y) > 1000
 
                 // tabControl吸顶
-                // console.log(this.tabOffsetTop);
                 this.isShowTab = (-position.y) >= this.tabOffsetTop
             },
             loadMore() {
@@ -116,7 +114,6 @@
             // 获取tab-control距离content顶部的距离
             swiperImageLoad(){
                 this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
-                console.log(this.$refs.tabControl);
             }
         },
         components: {
@@ -135,7 +132,7 @@
             this.$bus.$on('itemImgLoad', () => {
                 refresh()
             })
-        }
+        },
     }
 </script> 
 <style scoped>

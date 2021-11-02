@@ -1,5 +1,5 @@
 <template>
-    <div class="goods-item">
+    <div class="goods-item" @click="itemClick">
         <img :src="goodsItem.show.img" alt="" @load="imgLoad">
         <div class="goods-info">
             <p>{{goodsItem.title}}</p>
@@ -20,9 +20,12 @@
         computed: {
         },
         methods: {
-            imgLoad(){
+            imgLoad() {
                 // 事件总线
                 this.$bus.$emit('itemImgLoad')
+            },
+            itemClick() {
+                this.$router.push('/detail/'+ this.goodsItem.iid)
             }
         },
         props: {
@@ -62,7 +65,7 @@
         color: var(--color-high-text);
     }
 
-    .goods-info .collect{
+    .goods-info .collect {
         position: relative;
         padding: 2px 5px 2px 20px;
     }
