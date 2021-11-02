@@ -2,7 +2,7 @@
     <swiper>
         <swiper-item v-for="item in banner">
             <a :href="item.link">
-                <img :src="item.image" alt="">
+                <img :src="item.image" alt="" @load="imgLoad">
             </a>
         </swiper-item>
     </swiper>
@@ -13,6 +13,7 @@
         name: 'HomeSwiper',
         data() {
             return {
+                isLoad:false
             }
         },
         created() {
@@ -20,6 +21,12 @@
         computed: {
         },
         methods: {
+            imgLoad(){
+                if(!this.isLoad){
+                    this.$emit('swiperImageLoad')
+                    this.isLoad = !this.isLoad
+                }
+            }
         },
         components: {
             Swiper,
