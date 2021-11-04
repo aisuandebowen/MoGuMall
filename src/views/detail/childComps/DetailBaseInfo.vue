@@ -4,8 +4,16 @@
         <span class="newPrice">{{goods.newPrice}}</span>
         <span class="oldPrice">{{goods.oldPrice}}</span>
         <span class="discount">{{goods.discount}}</span>
-        <ul class="columns">
-            <li v-for="item in goods.columns">{{item}}</li>
+        <ul class="info-row">
+            <li>{{goods.columns[0]}}</li>
+            <li>{{goods.columns[1]}}</li>
+            <li>{{goods.services[goods.services.length-1].name}}</li>
+        </ul>
+        <ul class="info-row">
+            <li v-for="index in goods.services.length-1" v-if="Object.keys(goods.services[index-1]).length>=2">
+                <img :src="goods.services[index-1].icon" alt="">
+                <span>{{goods.services[index-1].name}}</span>
+            </li>
         </ul>
     </div>
 </template>
@@ -61,21 +69,31 @@
         border-radius: 15px;
     }
 
-    .columns {
-        margin-top: 20px;
+    .info-row {
+        padding: 15px 0;
         display: flex;
+        justify-content: space-between;
         list-style: none;
         font-size: 13px;
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
     }
 
-    .columns li:nth-child(1) {
-        float: left;
-    }
-    .columns li:nth-child(2) {
+    .info-row li {
         flex: 1;
         text-align: center;
     }
-    .columns li:nth-child(3) {
-        float: right;
+
+    .info-row li:first-child{
+        text-align: left;
     }
+
+    .info-row li:last-child{
+        text-align: right;
+    }
+
+    .info-row img {
+        width: 15px;
+        vertical-align: middle;
+    }
+
 </style>

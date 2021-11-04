@@ -59,8 +59,6 @@
             this.getHomeGoods('pop')
             this.getHomeGoods('new')
             this.getHomeGoods('sell')
-
-            console.log('home create');
         },
         computed: {
             showGoods() {
