@@ -1,9 +1,12 @@
 <template>
     <div id="detail">
-        <detail-nav-bar></detail-nav-bar>
-        <detail-swiper :top-imgs="topImgs"></detail-swiper>
-        <detail-base-info :goods="goods"></detail-base-info>
-        <detail-shop-info :shop="shop"></detail-shop-info>
+        <detail-nav-bar class="detail-nav-bar"></detail-nav-bar>
+        <scroll :probe-tpe="2" :pull-up-load="true" class="content" ref="scroll">
+            <detail-swiper :top-imgs="topImgs"></detail-swiper>
+            <detail-base-info :goods="goods"></detail-base-info>
+            <detail-shop-info :shop="shop"></detail-shop-info>
+            <detail-good-info :good-info="goodInfo" @goodImgLoad="goodImgLoad"></detail-good-info>
+        </scroll>
     </div>
 </template>
 <script>
@@ -11,49 +14,80 @@
     import DetailSwiper from './childComps/DetailSwiper'
     import DetailBaseInfo from './childComps/DetailBaseInfo'
     import DetailShopInfo from './childComps/DetailShopInfo'
+    import DetailGoodInfo from './childComps/DetailGoodInfo'
+    import Scroll from 'components/common/scroll/Scroll'
 
-    import { getDetail , Goods , Shop} from 'network/detail'
+    import {debounce} from 'common/utils'
+
+    import { getDetail, Goods, Shop, GoodInfo } from 'network/detail'
 
     export default {
         name: 'Detail',
         data() {
             return {
                 iid: null,
-                topImgs:[],
+                topImgs: [],
                 goods: {},
-                shop:{}
+                shop: {},
+                goodInfo: {}
             }
         },
         created() {
             this.iid = this.$route.params.id
 
             getDetail(this.iid).then(res => {
-                console.log(res);
                 // 轮播图数据
                 const data = res.result
-                this.topImgs = data.itemInfo.topImages
                 // console.log(res);
+                this.topImgs = data.itemInfo.topImages
                 // 商品信息数据
-                this.goods = new Goods(data.itemInfo,data.columns,data.shopInfo.services)
+                this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
                 // 店铺信息
                 this.shop = new Shop(data.shopInfo)
+                // 商品详细数据（图片）
+                this.goodInfo = new GoodInfo(data.detailInfo)
             })
         },
         computed: {
         },
         methods: {
+            goodImgLoad() {
+                const refresh = debounce(this.$refs.scroll.refresh)
+                refresh()
+            }
         },
         components: {
             DetailNavBar,
             DetailSwiper,
             DetailBaseInfo,
-            DetailShopInfo
+            DetailShopInfo,
+            Scroll,
+            DetailGoodInfo
         }
     }
 </script>
 <style scoped>
+    #detail {
+        height: 100vh;
+    }
+
+    .detail-nav-bar {
+        position: relative;
+        z-index: 2;
+        background-color: #fff;
+    }
+
     h1 {
-        font-size: 18px;
+        font-size: .24rem;
         margin: 0;
+    }
+
+    .content {
+        /* position: absolute;
+        top: .586667rem;
+        bottom:0;
+        left: 0;
+        right: 0; */
+        height: calc(100% - 44px);
     }
 </style>
