@@ -83,7 +83,7 @@
     }
 
     .desc {
-        padding: 15px 1px;
+        padding: 15px 5px;
     }
 
     .good-key {

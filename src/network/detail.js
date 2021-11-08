@@ -40,3 +40,10 @@ export class GoodInfo{
         this.list = detailInfo.detailImage[0].list
     }
 }
+
+export class GoodParams{
+    constructor(itemParams){
+        this.info = itemParams.info.set
+        this.rule = itemParams.rule.tables
+    }
+}

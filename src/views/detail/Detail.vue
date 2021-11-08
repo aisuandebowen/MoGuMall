@@ -6,6 +6,7 @@
             <detail-base-info :goods="goods"></detail-base-info>
             <detail-shop-info :shop="shop"></detail-shop-info>
             <detail-good-info :good-info="goodInfo" @goodImgLoad="goodImgLoad"></detail-good-info>
+            <detail-good-params :goodParams="goodParams"></detail-good-params>
         </scroll>
     </div>
 </template>
@@ -15,11 +16,12 @@
     import DetailBaseInfo from './childComps/DetailBaseInfo'
     import DetailShopInfo from './childComps/DetailShopInfo'
     import DetailGoodInfo from './childComps/DetailGoodInfo'
+    import DetailGoodParams from './childComps/DetailGoodParams'
     import Scroll from 'components/common/scroll/Scroll'
 
     import {debounce} from 'common/utils'
 
-    import { getDetail, Goods, Shop, GoodInfo } from 'network/detail'
+    import { getDetail, Goods, Shop, GoodInfo, GoodParams} from 'network/detail'
 
     export default {
         name: 'Detail',
@@ -29,7 +31,8 @@
                 topImgs: [],
                 goods: {},
                 shop: {},
-                goodInfo: {}
+                goodInfo: {},
+                goodParams: {}
             }
         },
         created() {
@@ -38,7 +41,7 @@
             getDetail(this.iid).then(res => {
                 // 轮播图数据
                 const data = res.result
-                // console.log(res);
+                console.log(res);
                 this.topImgs = data.itemInfo.topImages
                 // 商品信息数据
                 this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
@@ -46,6 +49,8 @@
                 this.shop = new Shop(data.shopInfo)
                 // 商品详细数据（图片）
                 this.goodInfo = new GoodInfo(data.detailInfo)
+                // 商品参数
+                this.goodParams = new GoodParams(data.itemParams)
             })
         },
         computed: {
@@ -62,7 +67,8 @@
             DetailBaseInfo,
             DetailShopInfo,
             Scroll,
-            DetailGoodInfo
+            DetailGoodInfo,
+            DetailGoodParams
         }
     }
 </script>
