@@ -1,9 +1,17 @@
 <template>
-    <table>
-        <tr>
-            <td></td>
-        </tr>
-    </table>
+    <div>
+        <table class="rule">
+            <tr v-for="item in rule">
+                <td v-for="item2 in item">{{item2}}</td>
+            </tr>
+        </table>
+        <table class="info">
+            <tr v-for="item2 in goodParams.info">
+                <td>{{item2.key}}</td>
+                <td>{{item2.value}}</td>
+            </tr>
+        </table>
+    </div>
 </template>
 <script>
     export default {
@@ -40,5 +48,44 @@
     }
 </script>
 <style scoped>
+    table {
+        border-collapse: collapse;
+    }
 
+    tr {
+        border-bottom: 1px solid #f5f1f1;
+    }
+
+    .rule tr {
+        text-align: center;
+    }
+
+    .rule td:first-child {
+        text-align: left;
+    }
+
+    .rule td {
+        width: 20vw;
+        height: 50px;
+    }
+
+    .rule td:first-child {
+        width: 40vw;
+    }
+
+    .info {
+        border-top: 5px solid #f5f1f1;
+    }
+
+    .info td {
+        height: 40px;
+    }
+
+    .info td:first-child {
+        width: 30vw;
+    }
+
+    .info td:nth-child(2) {
+        color: var(--color-high-text);
+    }
 </style>
