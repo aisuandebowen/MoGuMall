@@ -6,7 +6,9 @@
             <detail-base-info :goods="goods"></detail-base-info>
             <detail-shop-info :shop="shop"></detail-shop-info>
             <detail-good-info :good-info="goodInfo" @goodImgLoad="goodImgLoad"></detail-good-info>
-            <detail-good-params :goodParams="goodParams"></detail-good-params>
+            <detail-good-params :good-params="goodParams"></detail-good-params>
+            <detail-comment-info :comment-info="commentInfo"></detail-comment-info>
+            <goods-list :goods="recommend"></goods-list>
         </scroll>
     </div>
 </template>
@@ -17,11 +19,15 @@
     import DetailShopInfo from './childComps/DetailShopInfo'
     import DetailGoodInfo from './childComps/DetailGoodInfo'
     import DetailGoodParams from './childComps/DetailGoodParams'
+    import DetailCommentInfo from './childComps/DetailCommentInfo'
+    
+    import GoodsList from 'components/content/goods/GoodsList'
+    
     import Scroll from 'components/common/scroll/Scroll'
 
-    import {debounce} from 'common/utils'
+    import { debounce } from 'common/utils'
 
-    import { getDetail, Goods, Shop, GoodInfo, GoodParams} from 'network/detail'
+    import { getDetail, getRecommend, Goods, Shop, GoodInfo, GoodParams } from 'network/detail'
 
     export default {
         name: 'Detail',
@@ -32,7 +38,9 @@
                 goods: {},
                 shop: {},
                 goodInfo: {},
-                goodParams: {}
+                goodParams: {},
+                commentInfo: {},
+                recommend: []
             }
         },
         created() {
@@ -41,7 +49,7 @@
             getDetail(this.iid).then(res => {
                 // 轮播图数据
                 const data = res.result
-                console.log(res);
+                // console.log(res);
                 this.topImgs = data.itemInfo.topImages
                 // 商品信息数据
                 this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
@@ -51,6 +59,13 @@
                 this.goodInfo = new GoodInfo(data.detailInfo)
                 // 商品参数
                 this.goodParams = new GoodParams(data.itemParams)
+                // 评论信息
+                this.commentInfo = data.rate.cRate !== 0 ? data.rate.list[0] : {}
+            })
+
+            getRecommend().then(res=>{
+                // 推荐信息
+                this.recommend = res.data.list
             })
         },
         computed: {
@@ -68,7 +83,9 @@
             DetailShopInfo,
             Scroll,
             DetailGoodInfo,
-            DetailGoodParams
+            DetailGoodParams,
+            DetailCommentInfo,
+            GoodsList
         }
     }
 </script>

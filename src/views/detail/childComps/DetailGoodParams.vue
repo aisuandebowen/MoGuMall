@@ -56,21 +56,27 @@
         border-bottom: 1px solid #f5f1f1;
     }
 
+    td:first-child {
+        padding-left: 10px;
+    }
+
+    td:last-child {
+        padding-right: 10px;
+    }
+
     .rule tr {
         text-align: center;
     }
 
     .rule td:first-child {
         text-align: left;
+        width: 40vw;
+
     }
 
     .rule td {
         width: 20vw;
         height: 50px;
-    }
-
-    .rule td:first-child {
-        width: 40vw;
     }
 
     .info {
