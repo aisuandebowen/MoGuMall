@@ -25,6 +25,7 @@
     
     import Scroll from 'components/common/scroll/Scroll'
 
+    import {itemListenerMixin} from 'common/mixin'
     import { debounce } from 'common/utils'
 
     import { getDetail, getRecommend, Goods, Shop, GoodInfo, GoodParams } from 'network/detail'
@@ -67,6 +68,8 @@
                 // 推荐信息
                 this.recommend = res.data.list
             })
+
+            console.log('detail 已创建！！！');
         },
         computed: {
         },
@@ -86,7 +89,13 @@
             DetailGoodParams,
             DetailCommentInfo,
             GoodsList
-        }
+        },
+        mixins: [itemListenerMixin],
+        destoryed() {
+            // 取消全局事件的监听
+            this.$bus.$off('itemImgLoad',this.itemListener)
+            console.log('detail已经取消全局事件的监听！！！');
+        },
     }
 </script>
 <style scoped>

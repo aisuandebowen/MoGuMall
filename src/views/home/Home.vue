@@ -28,7 +28,7 @@
     import HomeRecommendView from './childComps/HomeRecommendView'
     import HomeFeatureView from './childComps/HomeFeatureView'
 
-    import {debounce} from 'common/utils'
+    import {itemListenerMixin} from 'common/mixin'
 
     import {
         getHomeGoods,
@@ -127,12 +127,18 @@
             BackTop
         },
         mounted() {
-            // 监听Item图片加载
-            const refresh = debounce(this.$refs.scroll.refresh)
-            this.$bus.$on('itemImgLoad', () => {
-                refresh()
-            })
+            // 监听Item图片加载 
+            // const refresh = debounce(this.$refs.scroll.refresh)
+            // this.$bus.$on('itemImgLoad', () => {
+            //     refresh()
+            // })
         },
+        deactivated() {
+            // 取消全局事件的监听
+            this.$bus.$off('itemImgLoad',this.itemListener)
+            console.log('home已经取消全局事件的监听！！！');
+        },
+        mixins:[itemListenerMixin]
     }
 </script> 
 <style scoped>
