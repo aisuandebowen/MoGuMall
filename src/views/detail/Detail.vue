@@ -111,25 +111,6 @@
           }
           this.$refs.detailNavBar.currentIndex = i
         }
-
-        // switch (-position.y) {
-        //   case this.themeTopYs[1]:
-        //     this.$refs.detailNavBar.currentIndex = 0;
-        //     break;
-        //   case this.themeTopYs[2]:
-        //     this.$refs.detailNavBar.currentIndex = 1;
-        //     break;
-        //   case this.themeTopYs[3]:
-        //     this.$refs.detailNavBar.currentIndex = 2;
-        //     break;
-        //   default:
-        //     if (-position.y > this.themeTopYs[3]) {
-        //       this.$refs.detailNavBar.currentIndex = 3;
-        //     } else {
-        //       this.$refs.detailNavBar.currentIndex = 0;
-        //     }
-        // }
-
       }
     },
     components: {
