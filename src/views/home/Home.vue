@@ -136,10 +136,9 @@
         deactivated() {
             // 取消全局事件的监听
             this.$bus.$off('itemImgLoad',this.itemListener)
-            console.log('home已经取消全局事件的监听！！！');
         },
-        mixins:[itemListenerMixin]
-    }
+        mixins:[itemListenerMixin],
+    }  
 </script> 
 <style scoped>
     #home {
