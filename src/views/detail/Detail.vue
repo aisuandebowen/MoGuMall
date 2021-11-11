@@ -128,7 +128,7 @@
           price: this.goods.realPrice,
           iid: this.iid
         } 
-        this.$store.commit('addCart',product)
+        this.$store.dispatch('addCart',product)
       }
     },
     components: {
