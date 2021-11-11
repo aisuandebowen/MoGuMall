@@ -10,6 +10,8 @@
       <detail-comment-info ref="comment" :comment-info="commentInfo"></detail-comment-info>
       <goods-list ref="recommend" :goods="recommend"></goods-list>
     </scroll>
+    <detail-bottom-bar @addCart="addCart"></detail-bottom-bar>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 <script>
@@ -20,13 +22,15 @@
   import DetailGoodInfo from "./childComps/DetailGoodInfo";
   import DetailGoodParams from "./childComps/DetailGoodParams";
   import DetailCommentInfo from "./childComps/DetailCommentInfo";
+  import DetailBottomBar from "./childComps/DetailBottomBar";
 
   import GoodsList from "components/content/goods/GoodsList";
 
   import Scroll from "components/common/scroll/Scroll";
 
-  import { itemListenerMixin } from "common/mixin";
+  import { itemListenerMixin, backTopMixIn } from "common/mixin";
   import { debounce } from "common/utils";
+  import { BACKTOP_DISTANCE } from 'common/const'
 
   import {
     getDetail,
@@ -104,6 +108,7 @@
         this.$refs.scroll.scrollTo(0, -this.themeTopYs[index])
       },
       contentScroll(position) {
+        // 详情页顶部与内容相对应
         for (let i in this.themeTopYs) {
           if (-position.y < this.themeTopYs[i]) {
             this.$refs.detailNavBar.currentIndex = i - 1
@@ -111,6 +116,19 @@
           }
           this.$refs.detailNavBar.currentIndex = i
         }
+
+        // 返回顶部
+        this.isShowBackTop = (-position.y) > BACKTOP_DISTANCE
+      },
+      addCart() {
+        const product = {
+          img: this.topImgs[0],
+          title: this.goods.title,
+          desc: this.goods.desc,
+          price: this.goods.realPrice,
+          iid: this.iid
+        } 
+        this.$store.commit('addCart',product)
       }
     },
     components: {
@@ -123,8 +141,9 @@
       DetailGoodParams,
       DetailCommentInfo,
       GoodsList,
+      DetailBottomBar,
     },
-    mixins: [itemListenerMixin],
+    mixins: [itemListenerMixin, backTopMixIn],
   };
 </script>
 <style scoped>
@@ -149,6 +168,6 @@
         bottom:0;
         left: 0;
         right: 0; */
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
   }
 </style>

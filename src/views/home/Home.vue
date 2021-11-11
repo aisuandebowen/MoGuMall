@@ -22,13 +22,13 @@
 
     import TabControl from 'components/content/tabControl/TabControl'
     import GoodsList from 'components/content/goods/GoodsList'
-    import BackTop from 'components/content/backTop/BackTop'
 
     import HomeSwiper from './childComps/HomeSwiper'
     import HomeRecommendView from './childComps/HomeRecommendView'
     import HomeFeatureView from './childComps/HomeFeatureView'
 
-    import {itemListenerMixin} from 'common/mixin'
+    import {itemListenerMixin,backTopMixIn} from 'common/mixin'
+    import {BACKTOP_DISTANCE} from 'common/const'
 
     import {
         getHomeGoods,
@@ -47,7 +47,6 @@
                     'sell': { page: 0, list: [] },
                 },
                 currentType: 'pop',
-                isShowBackTop: false,
                 tabOffsetTop: 0,
                 isShowTab: false
             }
@@ -97,12 +96,9 @@
                 this.$refs.tabControl.currentIndex = index
                 this.$refs.tabControl2.currentIndex = index
             },
-            backClick() {
-                this.$refs.scroll.scrollTo(0, 0)
-            },
             contentScroll(position) {
                 // 返回顶部
-                this.isShowBackTop = (-position.y) > 1000
+                this.isShowBackTop = (-position.y) > BACKTOP_DISTANCE
 
                 // tabControl吸顶
                 this.isShowTab = (-position.y) >= this.tabOffsetTop
@@ -124,7 +120,6 @@
             HomeRecommendView,
             HomeFeatureView,
             Scroll,
-            BackTop
         },
         mounted() {
             // 监听Item图片加载 
@@ -137,7 +132,7 @@
             // 取消全局事件的监听
             this.$bus.$off('itemImgLoad',this.itemListener)
         },
-        mixins:[itemListenerMixin],
+        mixins:[itemListenerMixin,backTopMixIn],
     }  
 </script> 
 <style scoped>
