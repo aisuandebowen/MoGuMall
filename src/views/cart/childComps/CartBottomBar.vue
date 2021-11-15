@@ -1,13 +1,13 @@
 <template>
     <div class="cart-bottom-bar">
         <div class="check-all">
-            <check-button></check-button>
+            <check-button :isChecked="isAllChecked" @click.native="changeCheckedAll"></check-button>
             <span>全选</span>
         </div>
         <div class="sum">
             合计:{{totalPrice}}
         </div>
-        <div class="caculate">去计算({{checkLength}})</div>
+        <div class="caculate">去计算({{checkedLength}})</div>
     </div>
 </template>
 <script>
@@ -30,11 +30,15 @@
                     return preValue + item.price * item.count
                 }, 0).toFixed(2)
             },
-            checkLength() {
-                return this.$store.state.cartList.filter((item=>item.checked)).length
-            }
+            ...mapGetters([
+                'isAllChecked',
+                'checkedLength'
+            ])
         },
         methods: {
+            changeCheckedAll() {
+                this.$store.dispatch('changeCheckedAll')
+            }
         },
         components: {
             CheckButton

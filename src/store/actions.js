@@ -30,5 +30,12 @@ export default {
     // // 不存在该商品，增添count属性，push进数组里
     // payload.count = 1
     // state.cartList.push(payload)
+  },
+  changeCheckedAll({state,commit}) {
+    let change = state.cartList.filter((item => item.checked)).length === state.cartList.length
+    commit('changeAllChecked',!change)
+  },
+  changeChecked({commit},payload) {
+    commit('changeProductChecked',payload)
   }
 }

@@ -25,7 +25,7 @@
         },
         methods: {
             checkClick() {
-                this.product.checked = !this.product.checked
+                this.$store.dispatch('changeChecked',this.product.iid)
             }
         },
         props: {
