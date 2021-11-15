@@ -1,6 +1,8 @@
 import {
   ADD_COUNTER,
-  ADD_TO_CART
+  ADD_TO_CART,
+  CHANGE_ALL_CHECKED,
+  CHANGE_PRODUCT_CHECKED
 } from "./mutation-types"
 
 export default {
@@ -33,9 +35,9 @@ export default {
   },
   changeCheckedAll({state,commit}) {
     let change = state.cartList.filter((item => item.checked)).length === state.cartList.length
-    commit('changeAllChecked',!change)
+    commit(CHANGE_ALL_CHECKED,!change)
   },
   changeChecked({commit},payload) {
-    commit('changeProductChecked',payload)
+    commit(CHANGE_PRODUCT_CHECKED,payload)
   }
 }
