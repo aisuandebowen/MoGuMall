@@ -14,10 +14,11 @@ export default {
     state.cartList.push(payload)
   },
   [CHANGE_ALL_CHECKED](state,payload) {
-    state.cartList = state.cartList.map(item=>{
-      item.checked = payload
-      return item
-    })
+    // state.cartList = state.cartList.map(item=>{
+    //   item.checked = payload
+    //   return item
+    // })
+    state.cartList.forEach(item=>item.checked = payload)
   },
   // 此时payload传入iid
   [CHANGE_PRODUCT_CHECKED](state,payload) {

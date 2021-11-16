@@ -7,7 +7,7 @@
         <div class="sum">
             合计:{{totalPrice}}
         </div>
-        <div class="caculate">去计算({{checkedLength}})</div>
+        <div class="caculate" @click="calcClick">去计算({{checkedLength}})</div>
     </div>
 </template>
 <script>
@@ -38,6 +38,11 @@
         methods: {
             changeCheckedAll() {
                 this.$store.dispatch('changeCheckedAll')
+            },
+            calcClick() {
+                if(!this.isAllChecked) {
+                    this.$toast.show('请选择购买的商品')
+                }
             }
         },
         components: {

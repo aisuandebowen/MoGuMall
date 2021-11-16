@@ -10,7 +10,7 @@
       <detail-comment-info ref="comment" :comment-info="commentInfo"></detail-comment-info>
       <goods-list ref="recommend" :goods="recommend"></goods-list>
     </scroll>
-    <detail-bottom-bar @addCart="addCart"></detail-bottom-bar>
+    <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -31,6 +31,8 @@
   import { itemListenerMixin, backTopMixIn } from "common/mixin";
   import { debounce } from "common/utils";
   import { BACKTOP_DISTANCE } from 'common/const'
+
+  import { mapActions } from 'vuex'
 
   import {
     getDetail,
@@ -54,7 +56,9 @@
         commentInfo: {},
         recommend: [],
         themeTopYs: [],
-        getThemeTopYs: null
+        getThemeTopYs: null,
+        message: '',
+        show: false
       };
     },
     created() {
@@ -100,6 +104,9 @@
     },
     computed: {},
     methods: {
+      ...mapActions([
+        'addCart'
+      ]),
       goodImgLoad() {
         this.refresh()
         this.getThemeTopYs()
@@ -120,15 +127,20 @@
         // 返回顶部
         this.isShowBackTop = (-position.y) > BACKTOP_DISTANCE
       },
-      addCart() {
+      addToCart() {
         const product = {
           img: this.topImgs[0],
           title: this.goods.title,
           desc: this.goods.desc,
           price: this.goods.realPrice,
           iid: this.iid
-        } 
-        this.$store.dispatch('addCart',product)
+        }
+        this.addCart(product).then(res => {
+          this.$toast.show(res)
+        })
+        // this.$store.dispatch('addCart', product).then(res => {
+        //   console.log(res);
+        // })
       }
     },
     components: {
